@@ -10,6 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata && \
+    pip3 install pip --upgrade && \
     pip3 install -I --no-cache-dir psutil gunicorn flask requests idna markupsafe && \
     cd /tmp && git clone -b newnew  --depth 1 https://github.com/Harry-zklcdc/Judger.git && cd Judger && \
     mkdir build && cd build && cmake .. && make && make install && cd ../bindings/Python && python3 setup.py install && \
