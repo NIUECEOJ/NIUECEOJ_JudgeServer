@@ -101,6 +101,7 @@ class JudgeClient(object):
     def _judge_one(self, test_case_file_id):
         test_case_info = self._get_test_case_file_info(test_case_file_id)
         in_file = os.path.join(self._test_case_dir, test_case_info["input_name"])
+        out_file = os.path.join(self._test_case_dir, test_case_info["output_name"])
 
         if self._io_mode["io_mode"] == ProblemIOMode.file:
             user_output_dir = os.path.join(self._submission_dir, str(test_case_file_id))
@@ -146,6 +147,8 @@ class JudgeClient(object):
         # if progress exited normally, then we should check output result
         run_result["output_md5"] = None
         run_result["output"] = None
+        run_result["std_in"] = None
+        run_result["std_out"] = None
         if run_result["result"] == _judger.RESULT_SUCCESS:
             if not os.path.exists(user_output_file):
                 run_result["result"] = _judger.RESULT_WRONG_ANSWER
@@ -169,8 +172,18 @@ class JudgeClient(object):
 
         if self._output:
             try:
-                with open(user_output_file, "rb") as f:
-                    run_result["output"] = f.read().decode("utf-8", errors="backslashreplace")
+                with open(user_output_file,"r") as f:
+                    run_result["output"] = f.read(128)
+                    if f.read(1):
+                        run_result["output"]+="..."
+                with open(in_file,"r") as f:
+                    run_result["std_in"] = f.read(128)
+                    if f.read(1):
+                        run_result["std_in"]+="..."
+                with open(out_file,"r") as f:
+                    run_result["std_out"] = f.read(128)
+                    if f.read(1):
+                        run_result["std_out"]+="..."
             except Exception:
                 pass
 
