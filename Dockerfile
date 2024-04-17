@@ -16,7 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata && \
     pip3 install -I --no-cache-dir psutil gunicorn flask requests idna && \
-    cd /tmp && git clone -b newnew  --depth 1 https://github.com/Harry-zklcdc/Judger.git && cd Judger && \
+    cd /tmp && git clone -b NIUECEOJ  --depth 1 https://github.com/NIUECEOJ/NIUECEOJ_Judger && cd NIUECEOJ_Judger && \
     mkdir build && cd build && cmake .. && make && make install && cd ../bindings/Python && python3 setup.py install && \
     apt-get purge -y --auto-remove $buildDeps && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
